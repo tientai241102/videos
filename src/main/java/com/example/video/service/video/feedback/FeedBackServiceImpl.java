@@ -28,7 +28,7 @@ public class FeedBackServiceImpl extends BaseService implements FeedBackService 
     @Override
     public Feedback createFeedBack(Feedback feedback) throws Exception {
         User user = getUser();
-        if (feedback.getRate() < 0 || StringUtils.isNotBlank(feedback.getComment())
+        if (feedback.getRate() < 0 || StringUtils.isBlank(feedback.getComment())
                 || !videoRepository.existsById(feedback.getVideoId())) {
             throw new Exception("Ban phai nhap du cac truong yeu cau.");
         }
