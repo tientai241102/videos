@@ -38,7 +38,7 @@ public class FeedBackServiceImpl extends BaseService implements FeedBackService 
         video.setNumberRate(video.getNumberRate() + 1);
         video.setRateAVG((feedback.getRate() + feedback.getRate()) / (video.getNumberRate() + 1));
         videoRepository.save(video);
-        return null;
+        return feedback;
     }
 
     @Override
