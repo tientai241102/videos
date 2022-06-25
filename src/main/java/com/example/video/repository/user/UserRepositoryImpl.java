@@ -1,9 +1,11 @@
 package com.example.video.repository.user;
 
+import com.example.video.entities.constant.UserFilterType;
 import com.example.video.entities.user.QUser;
 import com.example.video.entities.user.User;
 import com.example.video.entities.user.constant.UserRole;
 import com.example.video.repository.BaseRepository;
+import com.querydsl.core.types.OrderSpecifier;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -39,13 +41,17 @@ class UserRepositoryImpl extends BaseRepository implements UserRepositoryCustom 
     }
 
     @Override
-    public List<User> getUsersForAdmin(int page, UserRole role, String name, Date startTime, Date endTime, Boolean deleted) {
+    public List<User> getUsersForAdmin(int page, UserRole role, String name, Date startTime, Date endTime, Boolean deleted, UserFilterType type) {
         QUser qUser = QUser.user;
+        OrderSpecifier orderSpecifier = qUser.id.desc();
+        if (type != null && type.equals(UserFilterType.follow)){
+            orderSpecifier = qUser.totalFollower.desc();
+        }
         return query().from(qUser)
                 .where(qUser.phone.like("%" + name + "%").or(qUser.name.like("%" + name + "%")))
                 .select(qUser)
                 .offset(page*PAGE_SIZE).limit(PAGE_SIZE)
-                .orderBy(qUser.id.desc())
+                .orderBy(orderSpecifier)
                 .fetch();
     }
 

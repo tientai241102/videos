@@ -2,6 +2,7 @@ package com.example.video.service.user;
 
 
 
+import com.example.video.entities.constant.UserFilterType;
 import com.example.video.entities.request.ChangePassRequest;
 import com.example.video.entities.request.ForgotPassRequest;
 import com.example.video.entities.user.LoginRequest;
@@ -19,7 +20,7 @@ public interface UserService {
 
     User userSignup(User request) throws Exception;
 
-    List<User> getUsersForAdmin(int page, UserRole role, String name, Date startTime, Date endTime, Boolean deleted) throws Exception;
+    List<User> getUsersForAdmin(int page, UserRole role, String name, Date startTime, Date endTime, Boolean deleted, UserFilterType type) throws Exception;
 
     long countUsersForAdmin(UserRole role, String name , Date startTime, Date endTime, Boolean deleted) throws Exception;
 

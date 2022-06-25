@@ -1,5 +1,6 @@
 package com.example.video.controller;
 
+import com.example.video.entities.constant.UserFilterType;
 import com.example.video.entities.request.ChangePassRequest;
 import com.example.video.entities.response.BaseResponse;
 import com.example.video.entities.user.User;
@@ -28,9 +29,10 @@ public class UserController extends BaseController {
                                              @RequestParam(required = false) String name,
                                              @RequestParam(required = false)@DateTimeFormat(pattern="yyyy/MM/dd") Date timeStart,
                                              @RequestParam(required = false)@DateTimeFormat(pattern="yyyy/MM/dd") Date timeEnd,
+                                             @RequestParam(required = false) UserFilterType type,
                                              @RequestParam(required = false) Boolean deleted) {
         try {
-            List<User> data = userService.getUsersForAdmin(page, role, name, timeStart, timeEnd, deleted);
+            List<User> data = userService.getUsersForAdmin(page, role, name, timeStart, timeEnd, deleted,type);
             long totalRecord = userService.countUsersForAdmin(role, name, timeStart, timeEnd, deleted);
             return ResponseEntity.ok(new BaseResponse(data, totalRecord));
         } catch (Exception ex) {

@@ -1,6 +1,7 @@
 package com.example.video.service.user;
 
 import com.example.video.entities.UploadFile;
+import com.example.video.entities.constant.UserFilterType;
 import com.example.video.entities.request.ChangePassRequest;
 import com.example.video.entities.user.LoginRequest;
 import com.example.video.entities.user.User;
@@ -130,9 +131,9 @@ class UserServiceImpl extends BaseService implements UserService {
     }
 
     @Override
-    public List<User> getUsersForAdmin(int page, UserRole role, String name, Date startTime, Date endTime, Boolean deleted) throws Exception {
+    public List<User> getUsersForAdmin(int page, UserRole role, String name, Date startTime, Date endTime, Boolean deleted, UserFilterType type) throws Exception {
        User myUser = getUser();
-        List<User> users= userRepository.getUsersForAdmin(page, role, name, startTime, endTime, deleted);
+        List<User> users= userRepository.getUsersForAdmin(page, role, name, startTime, endTime, deleted,type);
         for (User user: users){
             user.setFollow(followRepository.existsByOwnerIdAndPartnerId(myUser.getId(),user.getId()));
         }

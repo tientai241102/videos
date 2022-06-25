@@ -1,5 +1,6 @@
 package com.example.video.service.video;
 
+import com.example.video.entities.constant.VideoFilterType;
 import com.example.video.entities.user.User;
 import com.example.video.entities.video.Video;
 import com.example.video.entities.video.VideoQuestion;
@@ -26,8 +27,8 @@ public class VideoServiceImpl extends BaseService implements VideoService {
     private FollowRepository followRepository;
 
     @Override
-    public List<Video> getVideos(int page, String name, Integer ownerId) throws Exception {
-        List<Video> videos = videoRepository.getVideos(page, name, ownerId);
+    public List<Video> getVideos(int page, String name, Integer ownerId, VideoFilterType type) throws Exception {
+        List<Video> videos = videoRepository.getVideos(page, name, ownerId,type);
         return videos;
     }
 

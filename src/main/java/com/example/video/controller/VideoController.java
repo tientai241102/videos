@@ -1,5 +1,6 @@
 package com.example.video.controller;
 
+import com.example.video.entities.constant.VideoFilterType;
 import com.example.video.entities.response.BaseResponse;
 import com.example.video.entities.video.Video;
 import com.example.video.service.follow.FollowService;
@@ -18,10 +19,11 @@ public class VideoController {
 
     @GetMapping("v1/video/get-videos")
     public ResponseEntity<?> getVideos(@RequestParam int page,
-                                        @RequestParam(required = false) String name,
-                                        @RequestParam(required = false) Integer ownerId) {
+                                       @RequestParam(required = false) String name,
+                                       @RequestParam(required = false) Integer ownerId,
+                                       @RequestParam(required = false) VideoFilterType type) {
         try {
-            return ResponseEntity.ok(new BaseResponse(videoService.getVideos(page,name,ownerId)));
+            return ResponseEntity.ok(new BaseResponse(videoService.getVideos(page,name,ownerId,type)));
         } catch (Exception ex) {
             return  ResponseEntity.badRequest().body(new BaseResponse(ex.getMessage()));
         }
