@@ -86,11 +86,11 @@ class FileStorageServiceImpl extends BaseService implements FileStorageService {
         Files.copy(new ByteArrayInputStream(videoFile.getBytes()), orginalLocation, StandardCopyOption.REPLACE_EXISTING);
         String url = getURLBase();
         url = url.concat("/api/video/");
-        BufferedImage bimg = ImageIO.read(thumbFile.getInputStream());
+//        BufferedImage bimg = ImageIO.read(thumbFile.getInputStream());
         UploadFile image = new UploadFile();
         image.setType(UploadFileType.VIDEO_NATIVE);
-        image.setWidth(bimg.getWidth());
-        image.setHeight(bimg.getHeight());
+//        image.setWidth(bimg.getWidth());
+//        image.setHeight(bimg.getHeight());
         image.setOriginUrl(url.concat(orginalName));
         image.setSize(videoFile.getSize());
         image.setOriginName(videoFile.getOriginalFilename());
