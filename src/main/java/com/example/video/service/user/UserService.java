@@ -28,9 +28,13 @@ public interface UserService {
 
     void checkPassword(User request) throws Exception;
 
+    User adminAddUser(User request) throws Exception;
+
     User updateProfile(User request) throws Exception;
 
     User getProfile(int userId) throws Exception;
+
+    void editUser(User request) throws Exception;
 
     void deleteUser(User request) throws Exception;
 

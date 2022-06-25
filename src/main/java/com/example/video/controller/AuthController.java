@@ -62,5 +62,29 @@ public class AuthController extends BaseController {
             return ResponseEntity.badRequest().body(new BaseResponse(ex.getMessage()));
         }
     }
+    @PostMapping("admin/v1/auth/add-user")
+    public ResponseEntity<?> adminSignup(@Valid @RequestBody final User request) {
+        try {
+            if(StringUtils.isEmpty(request.getPassword())
+                    || (StringUtils.isEmpty(request.getEmail()) && StringUtils.isEmpty(request.getPhone()))
+                    || StringUtils.isEmpty(request.getName())
+                    || request.getRole() == null) {
+                throw new Exception("required_fields");
+            }
+            return ResponseEntity.ok(new BaseResponse(userService.adminAddUser(request), "register_success"));
+        } catch (Exception ex) {
+            return ResponseEntity.badRequest().body(new BaseResponse(ex.getMessage()));
+        }
+    }
+
+    @PostMapping("admin/v1/auth/edit-user")
+    public ResponseEntity<?> editUser(@Valid @RequestBody final User request) {
+        try {
+            userService.editUser(request);
+            return ResponseEntity.ok(new BaseResponse("register_success"));
+        } catch (Exception ex) {
+            return ResponseEntity.badRequest().body(new BaseResponse(ex.getMessage()));
+        }
+    }
 
 }

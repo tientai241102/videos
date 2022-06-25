@@ -202,6 +202,23 @@ class UserServiceImpl extends BaseService implements UserService {
             throw new Exception("old_password_no_match");
         }
     }
+    @Override
+    public User adminAddUser(User request) throws Exception {
+//        getUser(UserRole.ROLE_STAFF);
+        if (!StringUtils.isEmpty(request.getPhone())) {
+            if (userRepository.existsByPhone(request.getPhone())) {
+                throw new Exception("phone_exists");
+            }
+        }
+        if (!StringUtils.isEmpty(request.getEmail())) {
+            if (userRepository.existsByEmail(request.getEmail())) {
+                throw new Exception("email_exists");
+            }
+        }
+        request.setPassword(passwordEncoder.encode(request.getPassword()));
+        request = userRepository.save(request);
+        return request;
+    }
 
     @Override
     public User getProfile(int userId) throws Exception {
@@ -209,6 +226,41 @@ class UserServiceImpl extends BaseService implements UserService {
         User user = userRepository.findById(userId).orElseThrow(() -> new Exception("not_found"));
         return user;
 
+    }
+    @Override
+    public void editUser(User request) throws Exception {
+//        getUser(UserRole.ROLE_STAFF);
+        User user = userRepository.findById(request.getId()).orElseThrow(() -> new Exception("user_not_found"));
+        if (!StringUtils.isEmpty(request.getPhone()) && (StringUtils.isEmpty(user.getPhone()) || !request.getPhone().equals(user.getPhone()))) {
+            if (userRepository.existsByPhone(request.getPhone())) {
+                throw new Exception("SDT đã tồn tại ở một tài khoản khác");
+            }
+            user.setPhone(request.getPhone());
+        }
+        if (!StringUtils.isEmpty(request.getEmail()) && (StringUtils.isEmpty(user.getEmail()) || !request.getEmail().equals(user.getEmail()))) {
+            if (userRepository.existsByEmail(request.getEmail())) {
+                throw new Exception("Email đã tồn tại ở một tài khoản khác");
+            }
+            user.setEmail(request.getEmail());
+        }
+        if (!StringUtils.isEmpty(request.getName())) {
+            user.setName(request.getName());
+        }
+        if (request.getGender() != null) {
+            user.setGender(request.getGender());
+        }
+        if (!StringUtils.isEmpty(request.getAddress())) {
+            user.setAddress(request.getAddress());
+        }
+        if (request.getBirthday() != null) {
+            user.setBirthday(request.getBirthday());
+        }
+        if (request.getAvatarId() != null) {
+            user.setAvatarId(request.getAvatarId());
+            UploadFile uploadFile = mediaRepository.findById(request.getAvatarId()).orElseThrow(() -> new Exception("Không tìm thấy hình ảnh"));
+            user.setAvatar(uploadFile);
+        }
+        userRepository.save(user);
     }
 
 
