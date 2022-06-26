@@ -4,6 +4,7 @@ import com.example.video.entities.constant.VideoFilterType;
 import com.example.video.entities.user.User;
 import com.example.video.entities.video.Video;
 import com.example.video.entities.video.VideoQuestion;
+import com.example.video.entities.video.constant.VideoCategory;
 import com.example.video.repository.follow.FollowRepository;
 import com.example.video.repository.video.VideoRepository;
 import com.example.video.repository.video.feedback.FeedBackRepository;
@@ -27,14 +28,14 @@ public class VideoServiceImpl extends BaseService implements VideoService {
     private FollowRepository followRepository;
 
     @Override
-    public List<Video> getVideos(int page, String name, Integer ownerId, VideoFilterType type) throws Exception {
-        List<Video> videos = videoRepository.getVideos(page, name, ownerId,type);
+    public List<Video> getVideos(int page, String name, Integer ownerId, VideoFilterType type, VideoCategory category) throws Exception {
+        List<Video> videos = videoRepository.getVideos(page, name, ownerId,type,category);
         return videos;
     }
 
     @Override
-    public Long countVideos(String name, Integer ownerId) throws Exception {
-        return videoRepository.countVideos( name, ownerId);
+    public Long countVideos(String name, Integer ownerId, VideoFilterType type, VideoCategory category) throws Exception {
+        return videoRepository.countVideos( name, ownerId,type,category);
     }
 
     @Override
@@ -91,6 +92,17 @@ public class VideoServiceImpl extends BaseService implements VideoService {
             }
             if (video.getFileId() > 0) {
                 newVideo.setFileId(video.getFileId());
+            }
+            if (video.getVideoQuestions() != null) {
+                videoQuestionRepository.deleteAllByVideoIdAndDeleted(newVideo.getId(),false);
+                for (VideoQuestion videoQuestion : video.getVideoQuestions()) {
+                    if (StringUtils.isNotBlank(videoQuestion.getQuestionData())
+                            || videoQuestion.getType() != null
+                            || videoQuestion.getDuration() >= 0) {
+                        videoQuestion.setVideoId(video.getId());
+                        videoQuestionRepository.save(videoQuestion);
+                    }
+                }
             }
         }
         return videoRepository.save(newVideo);

@@ -3,6 +3,7 @@ package com.example.video.controller;
 import com.example.video.entities.constant.VideoFilterType;
 import com.example.video.entities.response.BaseResponse;
 import com.example.video.entities.video.Video;
+import com.example.video.entities.video.constant.VideoCategory;
 import com.example.video.service.follow.FollowService;
 import com.example.video.service.video.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +22,11 @@ public class VideoController {
     public ResponseEntity<?> getVideos(@RequestParam int page,
                                        @RequestParam(required = false) String name,
                                        @RequestParam(required = false) Integer ownerId,
+                                       @RequestParam(required = false) VideoCategory category,
                                        @RequestParam(required = false) VideoFilterType type) {
         try {
-            return ResponseEntity.ok(new BaseResponse(videoService.getVideos(page,name,ownerId,type)));
+            return ResponseEntity.ok(new BaseResponse(videoService.getVideos(page,name,ownerId,type,category),
+                    videoService.countVideos(name,ownerId,type,category)));
         } catch (Exception ex) {
             return  ResponseEntity.badRequest().body(new BaseResponse(ex.getMessage()));
         }

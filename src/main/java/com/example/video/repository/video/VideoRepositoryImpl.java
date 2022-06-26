@@ -5,6 +5,7 @@ import com.example.video.entities.constant.VideoFilterType;
 import com.example.video.entities.user.QUser;
 import com.example.video.entities.video.QVideo;
 import com.example.video.entities.video.Video;
+import com.example.video.entities.video.constant.VideoCategory;
 import com.example.video.repository.BaseRepository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
@@ -18,7 +19,7 @@ import static com.example.video.util.Util.PAGE_SIZE;
 @Repository
 public class VideoRepositoryImpl extends BaseRepository implements VideoRepositoryCustom {
     @Override
-    public List<Video> getVideos(int page, String name, Integer ownerId, VideoFilterType type) {
+    public List<Video> getVideos(int page, String name, Integer ownerId, VideoFilterType type, VideoCategory category) {
         QVideo qVideo = QVideo.video1;
         BooleanBuilder builder = new BooleanBuilder();
         if (ownerId != null){
@@ -27,6 +28,9 @@ public class VideoRepositoryImpl extends BaseRepository implements VideoReposito
         builder.and(qVideo.deleted.eq(false));
         if (StringUtils.isNotBlank(name)){
             builder.and(qVideo.title.like("%"+name+"%"));
+        }
+        if (category != null){
+            builder.and(qVideo.category.eq(category));
         }
         builder.and(qVideo.deleted.eq(false));
         OrderSpecifier orderSpecifier = qVideo.id.desc();
@@ -46,16 +50,19 @@ public class VideoRepositoryImpl extends BaseRepository implements VideoReposito
     }
 
     @Override
-    public long countVideos(String name, Integer ownerId) {
+    public long countVideos(String name, Integer ownerId, VideoFilterType type, VideoCategory category) {
         QVideo qVideo = QVideo.video1;
         BooleanBuilder builder = new BooleanBuilder();
         if (ownerId != null){
             builder.and(qVideo.ownerId.eq(ownerId));
         }
-        builder.and(qVideo.deleted.eq(false));
+        if (category != null){
+        builder.and(qVideo.category.eq(category));
+        }
         if (StringUtils.isNotBlank(name)){
             builder.and(qVideo.title.like("%"+name+"%"));
         }
+        builder.and(qVideo.deleted.eq(false));
         return query().from(qVideo)
                 .where(builder)
                 .select(qVideo)
