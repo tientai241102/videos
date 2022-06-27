@@ -77,7 +77,7 @@ public class VideoServiceImpl extends BaseService implements VideoService {
     public Video updateVideo(Video video) throws Exception {
         User user = getUser();
         Video newVideo = videoRepository.findById(video.getId()).orElseThrow(() -> new Exception("not_found"));
-        if (user.getId() == video.getOwnerId()) {
+        if (user.getId() == newVideo.getOwnerId()) {
             if (StringUtils.isNotBlank(video.getTitle())) {
                 newVideo.setTitle(video.getTitle());
             }
