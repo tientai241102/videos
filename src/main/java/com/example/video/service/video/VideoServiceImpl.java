@@ -105,7 +105,10 @@ public class VideoServiceImpl extends BaseService implements VideoService {
                 }
             }
         }
-        return videoRepository.save(newVideo);
+        Video video1 = videoRepository.save(newVideo);
+        video.setVideoQuestions(videoQuestionRepository.getVideoQuestions(0, null, video1.getId()));
+        video.setFeedbacks(feedBackRepository.getFeedbacks(0, null, video1.getId()));
+        return video1;
     }
 
     @Override
