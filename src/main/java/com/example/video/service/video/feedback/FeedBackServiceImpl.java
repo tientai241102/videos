@@ -51,7 +51,7 @@ public class FeedBackServiceImpl extends BaseService implements FeedBackService 
             }
         }
 
-        return feedBackRepository.save(feedback);
+        return feedBackRepository.save(updateFeedback);
     }
 
     @Override

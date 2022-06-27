@@ -55,7 +55,7 @@ class UserRepositoryImpl extends BaseRepository implements UserRepositoryCustom 
             orderSpecifier = qUser.totalFollower.desc();
         }
         return query().from(qUser)
-                .where()
+                .where(builder)
                 .select(qUser)
                 .offset(page*PAGE_SIZE).limit(PAGE_SIZE)
                 .orderBy(orderSpecifier)
