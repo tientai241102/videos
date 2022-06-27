@@ -120,7 +120,7 @@ public class VideoServiceImpl extends BaseService implements VideoService {
     public void deleteVideo(Video video) throws Exception {
         User user = getUser();
         Video newVideo = videoRepository.findById(video.getId()).orElseThrow(() -> new Exception("not_found"));
-        if (user.getId() != video.getOwnerId()) {
+        if (user.getId() != newVideo.getOwnerId()) {
          throw new  Exception("Bạn không có quyền chỉnh sửa.");
         }
         newVideo.setDeleted(true);
