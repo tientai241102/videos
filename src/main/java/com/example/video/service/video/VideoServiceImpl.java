@@ -99,7 +99,7 @@ public class VideoServiceImpl extends BaseService implements VideoService {
                     if (StringUtils.isNotBlank(videoQuestion.getQuestionData())
                             || videoQuestion.getType() != null
                             || videoQuestion.getDuration() >= 0) {
-                        videoQuestion.setVideoId(video.getId());
+                        videoQuestion.setVideoId(newVideo.getId());
                         videoQuestionRepository.save(videoQuestion);
                     }
                 }
