@@ -1,6 +1,7 @@
 package com.example.video.entities.video;
 
 import com.example.video.entities.DateAudit;
+import com.example.video.entities.user.User;
 
 import javax.persistence.*;
 
@@ -14,6 +15,10 @@ public class Feedback extends DateAudit {
     private int ownerId;
     private int rate;
     private String comment;
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ownerId", referencedColumnName = "id", insertable = false, updatable = false)
+    private User user;
 
     public int getId() {
         return id;
