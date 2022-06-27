@@ -119,8 +119,9 @@ class UserServiceImpl extends BaseService implements UserService {
                 throw new Exception("email_exists");
             }
         }
-
-        request.setRole(UserRole.ROLE_USER);
+        if (request.getRole() == null) {
+            request.setRole(UserRole.ROLE_USER);
+        }
         request.setPassword(passwordEncoder.encode(request.getPassword()));
         request = userRepository.save(request);
 
@@ -132,10 +133,10 @@ class UserServiceImpl extends BaseService implements UserService {
 
     @Override
     public List<User> getUsersForAdmin(int page, UserRole role, String name, Date startTime, Date endTime, Boolean deleted, UserFilterType type) throws Exception {
-       User myUser = getUser();
-        List<User> users= userRepository.getUsersForAdmin(page, role, name, startTime, endTime, deleted,type);
-        for (User user: users){
-            user.setFollow(followRepository.existsByOwnerIdAndPartnerId(myUser.getId(),user.getId()));
+        User myUser = getUser();
+        List<User> users = userRepository.getUsersForAdmin(page, role, name, startTime, endTime, deleted, type);
+        for (User user : users) {
+            user.setFollow(followRepository.existsByOwnerIdAndPartnerId(myUser.getId(), user.getId()));
         }
         return users;
     }
@@ -202,6 +203,7 @@ class UserServiceImpl extends BaseService implements UserService {
             throw new Exception("old_password_no_match");
         }
     }
+
     @Override
     public User adminAddUser(User request) throws Exception {
 //        getUser(UserRole.ROLE_STAFF);
@@ -227,6 +229,7 @@ class UserServiceImpl extends BaseService implements UserService {
         return user;
 
     }
+
     @Override
     public void editUser(User request) throws Exception {
 //        getUser(UserRole.ROLE_STAFF);

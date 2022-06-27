@@ -15,7 +15,7 @@ public class Feedback extends DateAudit {
     private int ownerId;
     private int rate;
     private String comment;
-    
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ownerId", referencedColumnName = "id", insertable = false, updatable = false)
     private User user;
