@@ -26,6 +26,9 @@ public class VideoQuestionServiceImpl extends BaseService implements VideoQuesti
             throw new Exception("Ban phai nhap du cac truong yeu cau.");
 
         }
+        if (StringUtils.isBlank(videoQuestion.getAnswer())){
+            videoQuestion.setAnswer("answer");
+        }
         return videoQuestionRepository.save(videoQuestion);
     }
 

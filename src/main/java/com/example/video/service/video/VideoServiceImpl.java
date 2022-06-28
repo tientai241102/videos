@@ -65,6 +65,9 @@ public class VideoServiceImpl extends BaseService implements VideoService {
                 if (StringUtils.isNotBlank(videoQuestion.getQuestionData())
                         || videoQuestion.getType() != null
                         || videoQuestion.getDuration() >= 0) {
+                    if (StringUtils.isBlank(videoQuestion.getAnswer())){
+                        videoQuestion.setAnswer("answer");
+                    }
                     videoQuestion.setVideoId(video.getId());
                     videoQuestionRepository.save(videoQuestion);
                 }
@@ -90,7 +93,7 @@ public class VideoServiceImpl extends BaseService implements VideoService {
             if (video.getAvatarId() != null) {
                 newVideo.setAvatarId(video.getAvatarId());
             }
-            if (video.getFileId() > 0) {
+            if (video.getFileId() != null ) {
                 newVideo.setFileId(video.getFileId());
             }
             if (video.getVideoQuestions() != null) {
@@ -100,6 +103,9 @@ public class VideoServiceImpl extends BaseService implements VideoService {
                             || videoQuestion.getType() != null
                             || videoQuestion.getDuration() >= 0) {
                         videoQuestion.setVideoId(newVideo.getId());
+                        if (StringUtils.isBlank(videoQuestion.getAnswer())){
+                            videoQuestion.setAnswer("answer");
+                        }
                         videoQuestionRepository.save(videoQuestion);
                     }
                 }
