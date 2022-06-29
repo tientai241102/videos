@@ -4,7 +4,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum VideoQuestionType {
     MultiSelect,
-    Explain;
+    Explain,
+    OneSelect,;
 
     @JsonValue
     public int toValue() {
