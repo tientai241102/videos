@@ -68,7 +68,7 @@ public class VideoServiceImpl extends BaseService implements VideoService {
                     if (StringUtils.isBlank(videoQuestion.getAnswer())){
                         videoQuestion.setAnswer("answer");
                     }
-                    if (videoQuestionRepository.existsByVideoIdAndDuration(videoQuestion.getVideoId(),videoQuestion.getDuration())){
+                    if (videoQuestionRepository.existsByVideoIdAndDuration(video.getId(),videoQuestion.getDuration())){
                         throw new Exception("Thời gian khônd được trùng nhau.");
                     }
                     videoQuestion.setVideoId(video.getId());
@@ -106,7 +106,7 @@ public class VideoServiceImpl extends BaseService implements VideoService {
                             || videoQuestion.getType() != null
                             || videoQuestion.getDuration() >= 0) {
                         videoQuestion.setVideoId(newVideo.getId());
-                        if (videoQuestionRepository.existsByVideoIdAndDuration(videoQuestion.getVideoId(),videoQuestion.getDuration())){
+                        if (videoQuestionRepository.existsByVideoIdAndDuration(newVideo.getId(),videoQuestion.getDuration())){
                             throw new Exception("Thời gian khônd được trùng nhau.");
                         }
                         if (StringUtils.isBlank(videoQuestion.getAnswer())){
