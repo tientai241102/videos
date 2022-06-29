@@ -26,6 +26,9 @@ public class VideoQuestionServiceImpl extends BaseService implements VideoQuesti
             throw new Exception("Ban phai nhap du cac truong yeu cau.");
 
         }
+        if (videoQuestionRepository.existsByVideoIdAndDuration(videoQuestion.getVideoId(),videoQuestion.getDuration())){
+            throw new Exception("Thời gian khônd được trùng nhau.");
+        }
         if (StringUtils.isBlank(videoQuestion.getAnswer())){
             videoQuestion.setAnswer("answer");
         }

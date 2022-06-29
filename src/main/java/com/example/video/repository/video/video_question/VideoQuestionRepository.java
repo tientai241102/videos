@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface VideoQuestionRepository extends JpaRepository<VideoQuestion,Integer>,VideoQuestionRepositoryCustom {
     void deleteAllByVideoIdAndDeleted(int videoId, boolean deleted);
+    boolean existsByVideoIdAndDuration(int videoId,int duration);
 }
